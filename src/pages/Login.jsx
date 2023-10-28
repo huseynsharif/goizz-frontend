@@ -1,15 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Container, Label } from 'semantic-ui-react'
+import * as Yup from 'yup'
+import { useFormik } from 'formik';
+import { UserService } from '../services/UserService'
+
 
 export default function LogIn() {
 
   const navigate = useNavigate()
-  
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [data, setData] = useState({ success: true, message: "", data: {} })
+  const [isLoading, setIsLoading] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
+
+  const formik = useFormik(
+    {
+      initialValues: {
+        email: "",
+        password: ""
+      },
+      validationSchema: Yup.object({
+        email: Yup.string().email("Invalid email adress").required("Required"),
+        password: Yup.string().required("Required")
+      }),
+      onSubmit: (values) => {
+        setIsLoading(true);
+        let userService = new UserService()
+        userService.login(values).then(result => {
+          setData(result.data);
+          localStorage.setItem('id', JSON.stringify(result.data.data.id));
+          localStorage.setItem('username', JSON.stringify(result.data.data.username).slice(1, -1));
+          localStorage.setItem('isLoggedIn', JSON.stringify(true));
+
+          if (result.data.success) {
+            navigate("/homepage")
+          }
+        }).catch(err => console.log(err))
+        setIsLoading(false);
+      }
+    }
+  )
+
   return (
     <Container style={{ display: "flex", justifyContent: "center" }}>
 
-      <form className="form">
+      <form className="form" onSubmit={formik.handleSubmit}>
         <div className="flex-column">
           <label>Email</label>
         </div>
@@ -24,7 +61,7 @@ export default function LogIn() {
               <path d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z"></path>
             </g>
           </svg>
-          <input type="text" className="input" placeholder="Enter your Email" />
+          <input type="email" className="input" placeholder="Enter your Email" />
         </div>
 
         <div className="flex-column">
@@ -54,6 +91,8 @@ export default function LogIn() {
           <span className="span" style={{ right: 0 }}>Forgot password?</span>
         </div>
         <button className="button-submit">Log In</button>
+        {!data.success ? <Label color='red'>{data.message}</Label> : null}
+        {showMessage && <Label color='green' >We sent verification link to your email. <br /> Please, click the link to verify your account</Label>}
         <p className="p">
           Don't have an account? <span className="span" onClick={() => navigate("/signup")}>Sign Up</span>
         </p>
