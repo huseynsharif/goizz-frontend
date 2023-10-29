@@ -90,7 +90,7 @@ export default function LogIn() {
         <div className="flex-row">
           <span className="span" style={{ right: 0 }}>Forgot password?</span>
         </div>
-        <button className="button-submit">Log In</button>
+        <button className="button-submit" type='submit'>Log In</button>
         {!data.success ? <Label color='red'>{data.message}</Label> : null}
         {showMessage && <Label color='green' >We sent verification link to your email. <br /> Please, click the link to verify your account</Label>}
         <p className="p">

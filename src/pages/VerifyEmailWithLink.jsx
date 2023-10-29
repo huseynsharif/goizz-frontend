@@ -13,10 +13,11 @@ export default function VerifyEmailWithLink() {
       token: token,
     }
     let userService = new UserService()
-    userService.verifyAccountWithLink(values).then(result =>{
+    userService.verifyEmailWithLink(values).then(result =>{
       setVerifResult(result.data);
     })
-    
+    console.log(values);
+
   }, [])
   
 

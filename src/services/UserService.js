@@ -30,10 +30,10 @@ export class UserService{
         }
     }
 
-    verifyAccountWithLink(value) {
+    verifyEmailWithLink(value) {
         try {
-            const response = axios.get(
-                API_BASE_URL + `/users/verificate-user-with-link?userId=${value.userId}&token=${value.token}`
+            const response = axios.post(
+                API_BASE_URL + `/users/verify-email-with-link?userId=${value.userId}&token=${value.token}`
             );
 
             return response;
