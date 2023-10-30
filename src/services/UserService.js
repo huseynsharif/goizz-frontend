@@ -43,4 +43,35 @@ export class UserService{
         }
     }
 
+    forgotPasswordEmailVerification(email) {
+        try {
+            const response = axios.post(
+                API_BASE_URL + `/users/send-forgot-password-email?email=${email}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            return response;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    restorePassword(value) {
+        try {
+            const response = axios.post(
+                API_BASE_URL + `/users/restore-password`, value
+            );
+
+            return response;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }

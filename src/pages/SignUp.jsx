@@ -7,7 +7,6 @@ import { useFormik } from 'formik';
 import { UserService } from '../services/UserService'
 
 export default function SignUp() {
-
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -43,7 +42,6 @@ export default function SignUp() {
             }),
             onSubmit: (values) => {
                 setIsLoading(true)
-                console.log(values);
                 let userService = new UserService()
                 userService.signUp(values).then(result => {
                     setData(result.data)
