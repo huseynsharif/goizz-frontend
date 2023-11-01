@@ -11,8 +11,9 @@ export default function SignedOut() {
     return (
 
         <div>
-            <Menu position='right'>
-                <Menu.Item>
+            <Menu.Menu position='right'>
+               
+                    <Menu.Item>
                         <button class="uiverse" onClick={() => navigate("/signup")}>
                             <div class="wrapper">
                                 <span>Sign Up</span>
@@ -30,13 +31,14 @@ export default function SignedOut() {
                                 <div class="circle circle-1"></div>
                             </div>
                         </button>
-                </Menu.Item>
-                <Menu.Item>
+                    </Menu.Item>
+                    <Menu.Item>
                         <button className='login-button'
                             onClick={() => navigate("/login")}
                         ><div className='login-container'><span>Login</span></div></button>
-                </Menu.Item>
-            </Menu>
+                    </Menu.Item>
+                
+            </Menu.Menu>
         </div>
     )
 }

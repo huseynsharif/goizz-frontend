@@ -14,12 +14,27 @@ export default function Navi() {
   return (
     <div>
       <Menu size='massive'>
-        <button className='menubutton'>
-          Home
-        </button>
+        <button
+          className='menubutton'
+          onClick={() => navigate('/homepage')}
+        >Home</button>
+
+        {isLoggedIn && (<><div className='separator' />
+          <button
+            className='menubutton'
+            onClick={() => navigate('/my-quizzes')}
+          >My Quizzes</button>
+          <div className='separator' />
+          <button
+            className='menubutton'
+            onClick={() => navigate('/join-quiz')}
+          >Join quiz</button></>)}
+
+
+
 
         <Menu.Menu position='right'>
-            {isLoggedIn ? <SignedIn /> : <SignedOut />}
+          {isLoggedIn ? <SignedIn /> : <SignedOut />}
         </Menu.Menu>
       </Menu>
     </div>

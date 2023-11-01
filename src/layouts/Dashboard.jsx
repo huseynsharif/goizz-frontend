@@ -7,6 +7,8 @@ import VerifyEmailWithLink from '../pages/VerifyEmailWithLink'
 import LogIn from '../pages/LogIn'
 import ForgotPassword from '../pages/forgotPassword/ForgotPassword'
 import NewPassword from '../pages/forgotPassword/NewPassword'
+import MyQuizzes from '../pages/MyQuizzes'
+import AddQuiz from '../pages/AddQuiz'
 
 export default function Dashboard() {
   return (
@@ -18,7 +20,9 @@ export default function Dashboard() {
         <Route path='/verify-email-with-link/:userId/:token' Component={VerifyEmailWithLink} />
         <Route path='/forgot-password' Component={ForgotPassword} />
         <Route path='/new-password/:userId/:token' Component={NewPassword} />
-
+        <Route path='/my-quizzes' Component={MyQuizzes} />
+        <Route path='/add-quiz' Component={AddQuiz} />
+        
       </Routes>
     </div>
   )
