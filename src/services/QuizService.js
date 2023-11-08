@@ -7,4 +7,8 @@ export class QuizService{
         return axios.get(API_BASE_URL + "/quizzes/getall-by-userId?userId=" + userId)
     }
 
+    add(values){
+        return axios.post(API_BASE_URL + "/quizzes/add", values)
+    }
+
 }

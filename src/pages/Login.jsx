@@ -97,6 +97,8 @@ export default function LogIn() {
             onBlur={formik.handleBlur}
           />
           <svg
+            style={{ cursor: "pointer" }}
+            onClick={togglePasswordVisibility}
             viewBox="0 0 576 512"
             height="1em"
             xmlns="http://www.w3.org/2000/svg"
