@@ -46,8 +46,8 @@ export default function LogIn() {
 
   return (
     <Container style={{ display: "flex", justifyContent: "center" }}>
-
-      <form className="form" onSubmit={formik.handleSubmit}>
+      
+      <form className="form" onSubmit={formik.handleSubmit} >
         <div className="flex-column">
           <label>Email</label>
         </div>

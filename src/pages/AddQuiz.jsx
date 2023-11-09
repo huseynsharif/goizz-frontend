@@ -16,19 +16,20 @@ export default function AddQuiz() {
   const formik = useFormik(
     {
       initialValues: {
-        name: "",
+        title: "",
         description: ""
       },
       validationSchema: Yup.object({
-        name: Yup.string().required("Required"),
+        title: Yup.string().required("Required"),
         description: Yup.string()
       }),
       onSubmit: (values) => {
+        values.userId = localStorage.getItem('id')
         let quizService = new QuizService()
         quizService.add(values).then(result => {
           setData(result.data);
           if (result.data.success) {
-            // navigate("/homepage")
+            navigate("/add-question")
           }
         }).catch(err => console.log(err))
       }
@@ -37,14 +38,14 @@ export default function AddQuiz() {
 
   return (
     <Container style={{ display: "flex", justifyContent: "center" }}>
-      <Form onSubmit={formik.handleSubmit}>
-        <Form.Input fluid label='Name' placeholder='Name'
-          id="name"
+      <Form onSubmit={formik.handleSubmit} >
+        <Form.Input fluid label='title' placeholder='title'
+          id="title"
           onChange={formik.handleChange}
-          value={formik.values.name}
+          value={formik.values.title}
           onBlur={formik.handleBlur}
         />
-        {formik.touched.name && formik.errors.name ? <Label pointing color='red' basic>{formik.errors.name}</Label> : null}
+        {formik.touched.title && formik.errors.title ? <Label pointing color='red' basic>{formik.errors.title}</Label> : null}
 
         <Form.TextArea label='Description (optional)' placeholder='Write about the quiz...'
           id="description"
@@ -55,6 +56,7 @@ export default function AddQuiz() {
         {formik.touched.description && formik.errors.description ? <Label pointing color='red' basic>{formik.errors.description}</Label> : null}
 
         <Form.Button primary>Create</Form.Button>
+        {data.success ? null : <Label color='red'>{data.message}</Label>}
       </Form>
     </Container>
   )
