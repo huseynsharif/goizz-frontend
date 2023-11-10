@@ -29,6 +29,7 @@ export default function AddQuiz() {
         quizService.add(values).then(result => {
           setData(result.data);
           if (result.data.success) {
+            localStorage.setItem('quizId', JSON.stringify(result.data.data))
             navigate("/add-question")
           }
         }).catch(err => console.log(err))

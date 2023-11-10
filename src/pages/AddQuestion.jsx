@@ -17,17 +17,20 @@ export default function AddQuestion() {
         {
             initialValues: {
                 title: "",
-                correctAnswer: ""
+                correctAnswers: ""
             },
             validationSchema: Yup.object({
                 title: Yup.string().required("Required"),
-                correctAnswer: Yup.string().required("Required")
+                correctAnswers: Yup.string().required("Required")
             }),
             onSubmit: (values) => {
-                values.quizId = localStorage.getItem('quizId')
+                console.log(values);
+                values.quizId = parseInt(localStorage.getItem('quizId'))
                 let questionService = new QuestionService()
+                
                 questionService.add(values).then(result => {
                     setData(result.data);
+                    setShowAddQuestion(true)
                 }).catch(err => console.log(err))
             }
         }
@@ -36,7 +39,7 @@ export default function AddQuestion() {
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
 
-            <Form>
+            <Form onSubmit={formik.handleSubmit}>
                 <Form.Field>
                     <label>Title</label>
                     <input type='text'
@@ -49,18 +52,19 @@ export default function AddQuestion() {
                 <Form.Field>
                     <label>Correct answer</label>
                     <input type='text'
-                        id='correctAnswer'
+                        id='correctAnswers'
                         onChange={formik.handleChange}
-                        value={formik.values.correctAnswer}
+                        value={formik.values.correctAnswers}
                         onBlur={formik.handleBlur}
                     />
                 </Form.Field>
                 <Button
                     style={{ display: showAddQuestion && "none" }}
                     primary
-                    onClick={() => setShowAddQuestion(true)}
+                    type='submit'
                 >Add Question</Button>
             </Form>
+            <p>{formik.errors.correctAnswers}</p>
             {showAddQuestion && <AddQuestion />}
         </div>
     )
