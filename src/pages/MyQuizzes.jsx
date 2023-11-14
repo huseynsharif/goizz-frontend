@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Container, Icon, Table, Header } from 'semantic-ui-react'
 import { QuizService } from '../services/QuizService'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 
 export default function MyQuizzes() {
@@ -16,7 +17,6 @@ export default function MyQuizzes() {
         quizService.getAllByUserId(localStorage.getItem("id"))
             .then(result => {
                 setQuizzes(result.data.data)
-                console.log(result.data.data);
             });
 
     }, [])
@@ -33,12 +33,14 @@ export default function MyQuizzes() {
                 </Table.Header>
                 <Table.Body>
                     {quizzes.map((quiz) => (<Table.Row key={quiz.id}>
-                        <Table.Cell>
-                            <Header>
-                                <Header.Content>{quiz.title}</Header.Content>
-                                <Header.Subheader>{quiz.description}</Header.Subheader>
-                            </Header>
-                        </Table.Cell>
+                        <Link to={`/quiz/${quiz.id}`}>
+                            <Table.Cell>
+                                <Header>
+                                    <Header.Content>{quiz.title}</Header.Content>
+                                    <Header.Subheader>{quiz.description}</Header.Subheader>
+                                </Header>
+                            </Table.Cell>
+                        </Link>
                         <Table.Cell>{quiz.creationDate}</Table.Cell>
                     </Table.Row>))}
                 </Table.Body>
@@ -52,7 +54,7 @@ export default function MyQuizzes() {
                                 labelPosition='left'
                                 primary
                                 size='small'
-                                onClick={()=>navigate("/add-quiz")}
+                                onClick={() => navigate("/add-quiz")}
                             >
                                 <Icon>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="33" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
