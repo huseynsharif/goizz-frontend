@@ -14,6 +14,7 @@ import Quiz from '../pages/Quiz'
 import HomePage from '../pages/HomePage'
 import RealTimeQuizHost from '../pages/RealTimeQuizHost'
 import RealTimeQuizClient from '../pages/RealTimeQuizClient'
+import JoinQuiz from '../pages/JoinQuiz'
 
 export default function Dashboard() {
   return (
@@ -31,7 +32,9 @@ export default function Dashboard() {
         <Route path='/add-question' Component={AddQuestion} />
         <Route path='/quiz/:quizId' Component={Quiz} />
         <Route path='/rt-quiz-host/:quizId' Component={RealTimeQuizHost} />
-        <Route path='/rt-quiz-client' Component={RealTimeQuizClient} />
+        <Route path='/rt-quiz-client/:quizId' Component={RealTimeQuizClient} />
+        <Route path='/join-quiz' Component={JoinQuiz} />
+        
       </Routes>
     </div>
   )

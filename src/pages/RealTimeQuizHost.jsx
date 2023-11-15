@@ -2,27 +2,87 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { QuizService } from '../services/QuizService';
 import { useParams } from 'react-router-dom';
+import { Stomp } from '@stomp/stompjs';
+import { SOCKET_BASE_URL } from '../constants/apiConstants';
+import { Button, Container, Table } from 'semantic-ui-react';
+
 
 export default function RealTimeQuizHost() {
 
-    const { quizId } = useParams()
+  const { quizId } = useParams()
 
-    const [quiz, setQuiz] = useState({});
-    const [questions, setQuestions] = useState([]);
-    const navigate = useNavigate()
+  const [stompClient, setStompClient] = useState(null);
+  const [quiz, setQuiz] = useState({});
+  const [questions, setQuestions] = useState([]);
+  const [questionNo, setQuestionNo] = useState(0)
 
-    useEffect(() => {
+  const navigate = useNavigate()
 
-        let quizService = new QuizService()
-        quizService.getById(quizId).then(result => {
-          setQuiz(result.data.data.quiz)
-          setQuestions(result.data.data.questions)
-        })
-    
-    
-      }, []);
+  useEffect(() => {
+    let quizService = new QuizService()
+    quizService.getById(quizId).then(result => {
+      setQuiz(result.data.data.quiz)
+      setQuestions(result.data.data.questions)
+      // console.log(result.data.data.questions[0].question.title);
+    })
+  }, []);
 
-    return (
-        <div>RealTimeQuizHost</div>
-    )
+  useEffect(() => {
+    const socket = new WebSocket(SOCKET_BASE_URL + '/rt-quiz');
+
+    const client = Stomp.over(socket);
+    client.connect({}, (frame) => {
+      setStompClient(client)
+
+      client.subscribe('/topic/rt-quiz-client/' + quizId, (message) => {
+        console.log(message.body);
+      });
+    });
+
+    sendQuestion();
+    return () => {
+      if (stompClient) {
+        stompClient.disconnect();
+      }
+    };
+  }, []);
+
+  const sendQuestion = ()=>{
+
+    if (stompClient) {
+      stompClient.send('/rt-quiz', {}, JSON.stringify(questions[questionNo].question.id));
+  }
+
+    setQuestionNo(questionNo + 1)
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "row" }}>
+
+      <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%", flexDirection: "column" }}>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Question</Table.HeaderCell>
+              <Table.HeaderCell>Correct Answer</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                {questions.length > 0 && questions[questionNo].question.title}
+              </Table.Cell>
+              <Table.Cell>
+                {questions.length > 0 && questions[questionNo].correctAnswer}
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+        <div style={{ marginLeft: "auto", marginRight: "10px" }}>
+          <Button primary onClick={() => sendQuestion()}>Next</Button>
+        </div>
+      </Container>
+
+    </div>
+  )
 }
