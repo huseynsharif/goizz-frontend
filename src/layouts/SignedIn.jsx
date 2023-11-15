@@ -1,11 +1,17 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Dropdown, Menu, Image } from 'semantic-ui-react'
 
 
 export default function SignedIn() {
+
+  const navigate = useNavigate()
+
   const handleLogOut = () => {
     localStorage.clear();
+    navigate("/login")
     window.location.reload();
+    
   }
   return (
     <div>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { QuizService } from '../services/QuizService';
 import { useParams } from 'react-router-dom';
-import { Container, Table } from 'semantic-ui-react';
+import { Button, Container, Table } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Quiz() {
 
@@ -9,6 +10,7 @@ export default function Quiz() {
 
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -17,8 +19,6 @@ export default function Quiz() {
     quizService.getById(quizId).then(result => {
       setQuiz(result.data.data.quiz)
       setQuestions(result.data.data.questions)
-
-      console.log(result.data);
     })
 
 
@@ -29,7 +29,7 @@ export default function Quiz() {
       <div><h2>Title: {quiz.title}</h2></div>
       <div style={{ color: "grey" }}><h3>{quiz.description}</h3></div>
 
-      <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%" }}>
+      <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%", flexDirection:"column"}}>
         <Table celled>
           <Table.Header>
             <Table.Row>
@@ -51,6 +51,7 @@ export default function Quiz() {
             )}
           </Table.Body>
         </Table>
+        <Button circular primary  onClick={()=>navigate("/rt-quiz-host/"+quiz.id)}>Start</Button>
       </Container>
     </Container>
   )

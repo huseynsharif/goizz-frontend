@@ -11,12 +11,16 @@ import MyQuizzes from '../pages/MyQuizzes'
 import AddQuiz from '../pages/AddQuiz'
 import AddQuestion from '../pages/AddQuestion'
 import Quiz from '../pages/Quiz'
+import HomePage from '../pages/HomePage'
+import RealTimeQuizHost from '../pages/RealTimeQuizHost'
+import RealTimeQuizClient from '../pages/RealTimeQuizClient'
 
 export default function Dashboard() {
   return (
     <div>
       <Navi />
       <Routes>
+        <Route path='/homepage' Component={HomePage}/>
         <Route path='/login' Component={LogIn} />
         <Route path='/signup' Component={SignUp} />
         <Route path='/verify-email-with-link/:userId/:token' Component={VerifyEmailWithLink} />
@@ -26,7 +30,8 @@ export default function Dashboard() {
         <Route path='/add-quiz' Component={AddQuiz} />
         <Route path='/add-question' Component={AddQuestion} />
         <Route path='/quiz/:quizId' Component={Quiz} />
-        
+        <Route path='/rt-quiz-host/:quizId' Component={RealTimeQuizHost} />
+        <Route path='/rt-quiz-client' Component={RealTimeQuizClient} />
       </Routes>
     </div>
   )

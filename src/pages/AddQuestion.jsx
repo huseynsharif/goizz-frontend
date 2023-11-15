@@ -27,7 +27,7 @@ export default function AddQuestion() {
                 console.log(values);
                 values.quizId = parseInt(localStorage.getItem('quizId'))
                 let questionService = new QuestionService()
-                
+
                 questionService.add(values).then(result => {
                     setData(result.data);
                     setShowAddQuestion(true)
@@ -64,7 +64,6 @@ export default function AddQuestion() {
                     type='submit'
                 >Add Question</Button>
             </Form>
-            <p>{formik.errors.correctAnswers}</p>
             {showAddQuestion && <AddQuestion />}
         </div>
     )
