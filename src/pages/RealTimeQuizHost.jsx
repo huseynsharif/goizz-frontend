@@ -16,14 +16,11 @@ export default function RealTimeQuizHost() {
   const [questions, setQuestions] = useState([]);
   const [questionNo, setQuestionNo] = useState(0)
 
-  const navigate = useNavigate()
-
   useEffect(() => {
     let quizService = new QuizService()
     quizService.getById(quizId).then(result => {
       setQuiz(result.data.data.quiz)
       setQuestions(result.data.data.questions)
-      // console.log(result.data.data.questions[0].question.title);
     })
   }, []);
 
@@ -39,7 +36,6 @@ export default function RealTimeQuizHost() {
       });
     });
 
-    sendQuestion();
     return () => {
       if (stompClient) {
         stompClient.disconnect();
@@ -47,14 +43,15 @@ export default function RealTimeQuizHost() {
     };
   }, []);
 
-  const sendQuestion = ()=>{
+  const sendQuestion = () => {
+    setQuestionNo(prevQuestionNo => prevQuestionNo + 1)
+  }
 
+  useEffect(() => {
     if (stompClient) {
       stompClient.send('/rt-quiz', {}, JSON.stringify(questions[questionNo].question.id));
-  }
-
-    setQuestionNo(questionNo + 1)
-  }
+    }
+  }, [questionNo])
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>

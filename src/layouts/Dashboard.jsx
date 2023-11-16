@@ -33,8 +33,7 @@ export default function Dashboard() {
         <Route path='/quiz/:quizId' Component={Quiz} />
         <Route path='/rt-quiz-host/:quizId' Component={RealTimeQuizHost} />
         <Route path='/rt-quiz-client/:quizId' Component={RealTimeQuizClient} />
-        <Route path='/join-quiz' Component={JoinQuiz} />
-        
+        <Route path='/join-quiz' Component={JoinQuiz} />        
       </Routes>
     </div>
   )
