@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
 import { SOCKET_BASE_URL } from '../constants/apiConstants';
-import { Button, Container, Table } from 'semantic-ui-react';
+import { Container, Form, Header, Segment, Table } from 'semantic-ui-react';
 
 export default function RealTimeQuizClient() {
 
@@ -11,7 +10,6 @@ export default function RealTimeQuizClient() {
 
   const [stompClient, setStompClient] = useState(null);
   const [question, setQuestion] = useState(null);
-  
 
   useEffect(() => {
     const socket = new WebSocket(SOCKET_BASE_URL + '/rt-quiz');
@@ -21,8 +19,8 @@ export default function RealTimeQuizClient() {
       setStompClient(client)
 
       client.subscribe('/topic/rt-quiz-client/' + quizId, (question) => {
-        setQuestion(question.body)
-        console.log(question.body);
+        setQuestion(JSON.parse(question.body))
+        console.log(JSON.parse(question.body));
       });
     });
 
@@ -34,6 +32,15 @@ export default function RealTimeQuizClient() {
   }, []);
 
   return (
-    <div>{question && question}</div>
+    <Container style={{ marginTop: "20px" }}>
+      {question && <Segment placeholder>
+        <Header size='large'>Question: {question.title}</Header>
+      </Segment>}
+      <div>
+        <Form.TextArea placeholder='Your answer...' style={{ minHeight: 100 }}
+
+        />
+      </div>
+    </Container>
   )
 }

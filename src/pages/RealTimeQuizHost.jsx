@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 import { QuizService } from '../services/QuizService';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
@@ -22,7 +21,7 @@ export default function RealTimeQuizHost() {
       setQuiz(result.data.data.quiz)
       setQuestions(result.data.data.questions)
     })
-  }, []);
+  }, [quizId]);
 
   useEffect(() => {
     const socket = new WebSocket(SOCKET_BASE_URL + '/rt-quiz');
@@ -32,7 +31,7 @@ export default function RealTimeQuizHost() {
       setStompClient(client)
 
       client.subscribe('/topic/rt-quiz-client/' + quizId, (message) => {
-        console.log(message.body);
+
       });
     });
 
@@ -41,17 +40,17 @@ export default function RealTimeQuizHost() {
         stompClient.disconnect();
       }
     };
-  }, []);
+  }, [quizId, questions, stompClient]);
 
   const sendQuestion = () => {
-    setQuestionNo(prevQuestionNo => prevQuestionNo + 1)
+      setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
   }
 
   useEffect(() => {
     if (stompClient) {
       stompClient.send('/rt-quiz', {}, JSON.stringify(questions[questionNo].question.id));
     }
-  }, [questionNo])
+  }, [questions, questionNo])
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
