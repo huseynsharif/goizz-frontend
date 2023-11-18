@@ -38,7 +38,11 @@ export default function RealTimeQuizClient() {
 
   useEffect(() => {
 
-    if (question) {
+    if(question && !lastQuestionId){
+      setLastQuestionId(question.id)
+    }
+
+    if (question && answer) {
       let values = {
         questionId: lastQuestionId,
         userId: localStorage.getItem("id"),
@@ -49,7 +53,6 @@ export default function RealTimeQuizClient() {
     }
 
   }, [question])
-
 
   return (
     <Container style={{ marginTop: "20px", display: "block" }}>

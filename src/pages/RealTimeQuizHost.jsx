@@ -3,7 +3,7 @@ import { QuizService } from '../services/QuizService';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
 import { SOCKET_BASE_URL } from '../constants/apiConstants';
-import { Button, Container, Header, Segment, Table } from 'semantic-ui-react';
+import { Button, Container, Header, Label, Segment, Table } from 'semantic-ui-react';
 
 
 export default function RealTimeQuizHost() {
@@ -14,6 +14,7 @@ export default function RealTimeQuizHost() {
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
   const [questionNo, setQuestionNo] = useState(0)
+  const [correctAnswerers, setCorrectAnswerers] = useState([])
 
   useEffect(() => {
     let quizService = new QuizService()
@@ -33,6 +34,7 @@ export default function RealTimeQuizHost() {
       client.subscribe('/topic/rt-quiz-client/' + quizId, (message) => {
 
       });
+
     });
 
     return () => {
@@ -53,6 +55,13 @@ export default function RealTimeQuizHost() {
   useEffect(() => {
     if (stompClient) {
       stompClient.send('/rt-quiz', {}, JSON.stringify(questions[questionNo].question.id));
+
+      stompClient.subscribe('/topic/rt-quiz-correct-answerers/'
+        + questions[questionNo].question.id,
+        (user) => {
+          console.log(user.body);
+          setCorrectAnswerers((prevUsers => [...prevUsers, user.body]))
+        });
     }
   }, [questions, questionNo])
 
@@ -65,10 +74,15 @@ export default function RealTimeQuizHost() {
         </Segment>}
         <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "10px" }}>
           <Button onClick={() => previousQuestion()}>Previous</Button>
-
           <Button primary onClick={() => nextQuestion()}>Next</Button>
         </div>
       </Container>
+
+      {correctAnswerers &&
+        <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%", flexDirection: "column" }}>
+          <div><Label color='green'>Correct Answerers: </Label></div>
+          {correctAnswerers.map((username)=><div style={{marginTop:"2%"}}><Label basic>{username}</Label></div>)}
+        </Container>}
 
     </div>
   )
