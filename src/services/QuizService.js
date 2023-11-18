@@ -14,4 +14,8 @@ export class QuizService {
     getById(quizId) {
         return axios.get(API_BASE_URL + "/quizzes/get-by-id?quizId=" + quizId)
     }
+
+    sendAnswer(values){
+        return axios.post(API_BASE_URL + "/quizzes/receive-answer", values)
+    }
 }

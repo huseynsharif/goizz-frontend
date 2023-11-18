@@ -3,7 +3,7 @@ import { QuizService } from '../services/QuizService';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
 import { SOCKET_BASE_URL } from '../constants/apiConstants';
-import { Button, Container, Table } from 'semantic-ui-react';
+import { Button, Container, Header, Segment, Table } from 'semantic-ui-react';
 
 
 export default function RealTimeQuizHost() {
@@ -40,10 +40,14 @@ export default function RealTimeQuizHost() {
         stompClient.disconnect();
       }
     };
-  }, [quizId, questions, stompClient]);
+  }, [quizId, questions]);
 
-  const sendQuestion = () => {
-      setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
+  const nextQuestion = () => {
+    setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
+  }
+
+  const previousQuestion = () => {
+    setQuestionNo((prevQuestionNo) => prevQuestionNo - 1);
   }
 
   useEffect(() => {
@@ -53,29 +57,16 @@ export default function RealTimeQuizHost() {
   }, [questions, questionNo])
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <div style={{ display: "block", flexDirection: "row" }}>
 
       <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%", flexDirection: "column" }}>
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Question</Table.HeaderCell>
-              <Table.HeaderCell>Correct Answer</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell>
-                {questions.length > 0 && questions[questionNo].question.title}
-              </Table.Cell>
-              <Table.Cell>
-                {questions.length > 0 && questions[questionNo].correctAnswer}
-              </Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table>
-        <div style={{ marginLeft: "auto", marginRight: "10px" }}>
-          <Button primary onClick={() => sendQuestion()}>Next</Button>
+        {questions.length > 0 && <Segment placeholder>
+          <Header size='large'>Question: {questions[questionNo].question.title}</Header>
+        </Segment>}
+        <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "10px" }}>
+          <Button onClick={() => previousQuestion()}>Previous</Button>
+
+          <Button primary onClick={() => nextQuestion()}>Next</Button>
         </div>
       </Container>
 
