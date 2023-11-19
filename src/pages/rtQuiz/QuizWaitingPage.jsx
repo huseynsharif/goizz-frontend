@@ -1,5 +1,5 @@
 import React from 'react'
-import '../css/quizWaitingPage.css'
+import '../../css/quizWaitingPage.css'
 
 export default function QuizWaitingPage() {
     return (

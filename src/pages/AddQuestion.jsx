@@ -24,7 +24,6 @@ export default function AddQuestion() {
                 correctAnswers: Yup.string().required("Required")
             }),
             onSubmit: (values) => {
-                console.log(values);
                 values.quizId = parseInt(localStorage.getItem('quizId'))
                 let questionService = new QuestionService()
 
@@ -35,6 +34,16 @@ export default function AddQuestion() {
             }
         }
     )
+
+    const finish = (values) => {
+        values.quizId = parseInt(localStorage.getItem('quizId'))
+        let questionService = new QuestionService()
+
+        questionService.add(values).then(result => {
+            setData(result.data);
+        }).catch(err => console.log(err))
+        navigate("/my-quizzes")
+    }
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -63,6 +72,11 @@ export default function AddQuestion() {
                     primary
                     type='submit'
                 >Add Question</Button>
+                <Button
+                    style={{ display: showAddQuestion && "none" }}
+                    primary basic
+                    onClick={() => finish(formik.values)}
+                >Finish</Button>
             </Form>
             {showAddQuestion && <AddQuestion />}
         </div>

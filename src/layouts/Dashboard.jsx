@@ -12,13 +12,15 @@ import AddQuiz from '../pages/AddQuiz'
 import AddQuestion from '../pages/AddQuestion'
 import Quiz from '../pages/Quiz'
 import HomePage from '../pages/HomePage'
-import RealTimeQuizHost from '../pages/RealTimeQuizHost'
-import RealTimeQuizClient from '../pages/RealTimeQuizClient'
+import RealTimeQuizHost from '../pages/rtQuiz/RealTimeQuizHost'
+import RealTimeQuizClient from '../pages/rtQuiz/RealTimeQuizClient'
 import JoinQuiz from '../pages/JoinQuiz'
+import FinishPageHost from '../pages/rtQuiz/FinishPageHost'
+import FinishPageClient from '../pages/rtQuiz/FinishPageClient'
 
 export default function Dashboard() {
   return (
-    <div>
+    <div className='dashboard'>
       <Navi />
       <Routes>
         <Route path='/' Component={HomePage}/>
@@ -34,7 +36,9 @@ export default function Dashboard() {
         <Route path='/quiz/:quizId' Component={Quiz} />
         <Route path='/rt-quiz-host/:quizId' Component={RealTimeQuizHost} />
         <Route path='/rt-quiz-client/:quizId' Component={RealTimeQuizClient} />
-        <Route path='/join-quiz' Component={JoinQuiz} />        
+        <Route path='/join-quiz' Component={JoinQuiz} />     
+        <Route path='/finish-page-host' Component={FinishPageHost} />     
+        <Route path='/finish-page-client' Component={FinishPageClient} />
       </Routes>
     </div>
   )

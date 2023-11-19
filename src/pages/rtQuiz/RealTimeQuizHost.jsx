@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { QuizService } from '../services/QuizService';
-import { useParams } from 'react-router-dom';
+import { QuizService } from '../../services/QuizService';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
-import { SOCKET_BASE_URL } from '../constants/apiConstants';
-import { Button, Container, Header, Label, Segment, Table } from 'semantic-ui-react';
+import { SOCKET_BASE_URL } from '../../constants/apiConstants';
+import { Button, Container, Header, Label, Segment } from 'semantic-ui-react';
+
 
 
 export default function RealTimeQuizHost() {
+
+  const navigate = useNavigate()
 
   const { quizId } = useParams()
 
@@ -45,17 +48,30 @@ export default function RealTimeQuizHost() {
   }, [quizId, questions]);
 
   const nextQuestion = () => {
-    setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
+
+    if (questionNo == questions.length - 1) {
+      if (stompClient) {
+        stompClient.send('/finish-quiz', {}, JSON.stringify(quizId));
+        navigate("/finish-page-host")
+      }
+    }
+    else{
+      setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
+      setCorrectAnswerers([])
+    }
   }
 
   const previousQuestion = () => {
-    setQuestionNo((prevQuestionNo) => prevQuestionNo - 1);
+    if (questionNo != 0) {
+      setQuestionNo((prevQuestionNo) => prevQuestionNo - 1);
+      setCorrectAnswerers([])
+    }
   }
 
   useEffect(() => {
     if (stompClient) {
-      stompClient.send('/rt-quiz', {}, JSON.stringify(questions[questionNo].question.id));
 
+      stompClient.send('/rt-quiz', {}, JSON.stringify(questions[questionNo].question.id));
       stompClient.subscribe('/topic/rt-quiz-correct-answerers/'
         + questions[questionNo].question.id,
         (user) => {
@@ -73,15 +89,15 @@ export default function RealTimeQuizHost() {
           <Header size='large'>Question: {questions[questionNo].question.title}</Header>
         </Segment>}
         <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "10px" }}>
-          <Button onClick={() => previousQuestion()}>Previous</Button>
+          <Button onClick={() => previousQuestion()} disabled={questionNo == 0}>Previous</Button>
           <Button primary onClick={() => nextQuestion()}>Next</Button>
         </div>
       </Container>
 
-      {correctAnswerers &&
+      {correctAnswerers.length > 0 &&
         <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%", flexDirection: "column" }}>
           <div><Label color='green'>Correct Answerers: </Label></div>
-          {correctAnswerers.map((username)=><div style={{marginTop:"2%"}}><Label basic>{username}</Label></div>)}
+          {correctAnswerers.map((username) => <div style={{ marginTop: "2%" }}><Label basic>{username}</Label></div>)}
         </Container>}
 
     </div>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
-import { SOCKET_BASE_URL } from '../constants/apiConstants';
+import { SOCKET_BASE_URL } from '../../constants/apiConstants';
 import { Container, Form, Header, Segment, Table } from 'semantic-ui-react';
-import { QuizService } from '../services/QuizService';
-import QuizWaitingPage from './QuizWaitingPage';
+import { QuizService } from '../../services/QuizService';
+import QuizWaitingPage from '../rtQuiz/QuizWaitingPage';
 
 export default function RealTimeQuizClient() {
+  const navigate = useNavigate()
 
   const { quizId } = useParams()
 
@@ -26,7 +27,16 @@ export default function RealTimeQuizClient() {
 
       client.subscribe('/topic/rt-quiz-client/' + quizId, (newQuestion) => {
         setQuestion(JSON.parse(newQuestion.body))
+        setAnswer("")
       });
+
+      client.subscribe('/topic/rt-quiz-finish/' + quizId, (data) => {
+        console.log(data.body);
+        if (data.body==quizId) {
+          navigate("/finish-page-client")
+        }
+      });
+
     });
 
     return () => {
@@ -52,7 +62,7 @@ export default function RealTimeQuizClient() {
       setLastQuestionId(question.id)
     }
 
-  }, [question])
+  }, [answer, lastQuestionId, question])
 
   return (
     <Container style={{ marginTop: "20px", display: "block" }}>
@@ -60,6 +70,7 @@ export default function RealTimeQuizClient() {
         <Header size='large'>Question: {question.title}</Header>
       </Segment><div>
           <Form.TextArea placeholder='Your answer...' style={{ minHeight: 100, minWidth: 300 }}
+            value={answer}
             onChange={(e) => setAnswer(e.target.value)}
           />
         </div></div> : <QuizWaitingPage />}
