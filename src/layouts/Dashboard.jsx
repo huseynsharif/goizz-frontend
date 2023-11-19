@@ -21,6 +21,7 @@ export default function Dashboard() {
     <div>
       <Navi />
       <Routes>
+        <Route path='/' Component={HomePage}/>
         <Route path='/homepage' Component={HomePage}/>
         <Route path='/login' Component={LogIn} />
         <Route path='/signup' Component={SignUp} />
