@@ -55,7 +55,7 @@ export default function RealTimeQuizHost() {
         navigate("/finish-page-host")
       }
     }
-    else{
+    else {
       setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
       setCorrectAnswerers([])
     }
@@ -75,11 +75,19 @@ export default function RealTimeQuizHost() {
       stompClient.subscribe('/topic/rt-quiz-correct-answerers/'
         + questions[questionNo].question.id,
         (user) => {
-          console.log(user.body);
           setCorrectAnswerers((prevUsers => [...prevUsers, user.body]))
         });
     }
   }, [questions, questionNo])
+
+  useEffect(() => {
+    if (correctAnswerers) {
+      setCorrectAnswerers(
+        (prevUsers) =>
+          prevUsers.filter((item, index) => prevUsers.indexOf(item) === index)
+      )
+    }
+  }, [correctAnswerers])
 
   return (
     <div style={{ display: "block", flexDirection: "row" }}>
