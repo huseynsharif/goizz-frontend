@@ -1,12 +1,13 @@
 import React from 'react';
-import '../../css/finishPageClient.css'
 
 export default function FinishPageClient() {
 
     return (
-        <div className="pyro">
-            <div className="before"></div>
-            <div className="after"></div>
+        <div className="clapping" style={{width:"500px", height:"500px"}}>
+            <video>
+                <source src={process.env.PUBLIC_URL + '/media/clapping.mp4'} type="video/mp4"></source>
+                dasdasdsad
+            </video>
         </div>
     )
 }

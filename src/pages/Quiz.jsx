@@ -28,6 +28,7 @@ export default function Quiz() {
     <Container style={{ display: "flex", justifyContent: "center", marginTop: "2%", flexDirection: "column" }}>
       <div><h2>Title: {quiz.title}</h2></div>
       <div style={{ color: "grey" }}><h3>{quiz.description}</h3></div>
+      <div style={{ color: "green" }}><h3>ID: {quiz.id}</h3></div>
 
       <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%", flexDirection:"column"}}>
         <Table celled>
