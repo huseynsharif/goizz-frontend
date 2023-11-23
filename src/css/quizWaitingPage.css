@@ -29,7 +29,7 @@
     animation: up-down6123 3s ease-in-out 1s infinite alternate;
     position: relative;
     margin: 0 auto;
-    margin-top: 10%;
+    margin-top: 100px;
   }
   
   @keyframes up-down6123 {

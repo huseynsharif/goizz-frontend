@@ -51,7 +51,7 @@ export default function AddQuestion() {
             <Form onSubmit={formik.handleSubmit}>
                 <Form.Field>
                     <label>Title</label>
-                    <input type='text'
+                    <textarea type='text'
                         id='title'
                         onChange={formik.handleChange}
                         value={formik.values.title}

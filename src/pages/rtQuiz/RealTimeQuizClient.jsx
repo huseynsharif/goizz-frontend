@@ -67,7 +67,7 @@ export default function RealTimeQuizClient() {
   return (
     <Container style={{ marginTop: "20px", display: "block" }}>
       {question ? <div><Segment placeholder>
-        <Header size='large'>Question: {question.title}</Header>
+        <Header size='large'>{question.title}</Header>
       </Segment><div>
           <Form.TextArea placeholder='Your answer...' style={{ minHeight: 100, minWidth: 300 }}
             value={answer}

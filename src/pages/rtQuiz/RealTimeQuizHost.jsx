@@ -94,7 +94,7 @@ export default function RealTimeQuizHost() {
 
       <Container style={{ display: "flex", width: "500px", alignContent: "center", marginTop: "2%", flexDirection: "column" }}>
         {questions.length > 0 && <Segment placeholder>
-          <Header size='large'>Question: {questions[questionNo].question.title}</Header>
+          <Header size='large'>{questions[questionNo].question.title}</Header>
         </Segment>}
         <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "10px" }}>
           <Button onClick={() => previousQuestion()} disabled={questionNo == 0}>Previous</Button>

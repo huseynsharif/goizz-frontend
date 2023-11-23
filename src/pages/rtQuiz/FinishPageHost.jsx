@@ -1,9 +1,15 @@
 import React from 'react'
+import { Container, Header, Segment } from 'semantic-ui-react'
 
 export default function FinishPageHost() {
+
   return (
-    <div>
-        <h1>The quiz has finished.</h1>
-    </div>
+    <Container style={{ display: "flex", width: "500px", justifyContent: "center", marginTop: "2%", flexDirection:"column" }}>
+        <Segment color='green' placeholder >
+          
+            <Header>The quiz has finished.</Header>
+          
+          </Segment>
+    </Container>
   )
 }

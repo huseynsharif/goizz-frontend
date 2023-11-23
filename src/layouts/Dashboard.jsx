@@ -37,8 +37,9 @@ export default function Dashboard() {
         <Route path='/rt-quiz-host/:quizId' Component={RealTimeQuizHost} />
         <Route path='/rt-quiz-client/:quizId' Component={RealTimeQuizClient} />
         <Route path='/join-quiz' Component={JoinQuiz} />     
-        <Route path='/finish-page-host' Component={FinishPageHost} />     
-        <Route path='/finish-page-client' Component={FinishPageClient} />
+        <Route path='/finish-page-host' Component={FinishPageHost} />   
+        <Route path='/finish-page-client' Component={FinishPageClient} />   
+          
       </Routes>
     </div>
   )
